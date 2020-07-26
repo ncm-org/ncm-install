@@ -16,7 +16,7 @@ function get_os_name() {
     os_name="$(uname | tr '[:upper:]' '[:lower:]')"
 }
 
-function get_arch_name_name() {
+function get_arch_name() {
     case $(uname -m) in
     i386) arch_name="386" ;;
     i686) arch_name="386" ;;
@@ -24,7 +24,7 @@ function get_arch_name_name() {
     esac
 }
 
-function get_latest_latest_version() {
+function get_latest_version() {
     curl -LkSs "https://api.github.com/repos/ncm-org/ncm/releases/latest" -o "$ncm_folder/latest"
     latest_version=$(grep tag_name "$ncm_folder/latest" | awk -F '[:,"v]' '{print $6}')
     rm -f "$ncm_folder/latest"
@@ -34,8 +34,8 @@ function install() {
     mkdir -p "${ncm_folder}"
 
     get_os_name
-    get_arch_name_name
-    get_latest_latest_version
+    get_arch_name
+    get_latest_version
 
     download_name="ncm_${latest_version}_${os_name}_${arch_name}.zip"
     echo_green "download $download_name"
