@@ -8,7 +8,7 @@ arch=
 version=
 ncmhome=$HOME/.ncm
 
-function color_echo() {
+function echo_green() {
     echo -e "\033[32m${1}\033[0m"
 }
 
@@ -38,7 +38,7 @@ function install() {
     latest_version
 
     download_name="ncm_${version}_${os}_${arch}.zip"
-    color_echo "download $download_name"
+    echo_green "download $download_name"
 
     curl -Lk "https://github.com/ncm-org/ncm/releases/download/v$version/$download_name" -o "$ncmhome/$download_name"
     unzip -qq -o "$ncmhome/$download_name" -d "$ncmhome"
@@ -57,7 +57,7 @@ function install() {
         echo "$ncmenv" >>"$HOME"/.bash_profile
     fi
 
-    color_echo "successfully installed ncm@$version"
+    echo_green "successfully installed ncm@$version"
 }
 
 install
