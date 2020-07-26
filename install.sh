@@ -47,7 +47,7 @@ function install() {
     export NCM_HOME="$ncmhome"
     export PATH="$NCM_HOME":"$PATH"
 
-    ncmenv=$(printf "\n# added by ncm\nexport NCM_HOME=%s\nexport PATH=\$NCM_HOME:\$PATH\n" "$ncmhome")
+    ncmenv=$(printf "\n# added by ncm-install\nexport NCM_HOME=%s\nexport PATH=\$NCM_HOME:\$PATH\n" "$ncmhome")
 
     if [[ -f "$HOME"/.zshrc ]] && [[ "$(grep -c NCM_HOME <"$HOME"/.zshrc)" == 0 ]]; then
         echo "$ncmenv" >>"$HOME"/.zshrc
