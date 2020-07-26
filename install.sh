@@ -57,6 +57,7 @@ function install() {
         echo "$ncmenv" >>"$HOME"/.bash_profile
     fi
 
+    chmod +x "$ncmhome"/ncm
     echo_green "successfully installed ncm@$version"
 }
 
