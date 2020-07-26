@@ -1,0 +1,3 @@
+[submodule "sh.ncm.ink"]
+	path = sh.ncm.ink
+	url = git@e.coding.net:myroid/sh.ncm.ink/sh.ncm.ink.git
