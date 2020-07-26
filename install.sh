@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author: iamfan.net@gmail.com
-# Scripts are available for MacOS and Linux only
+# scripts are available for MacOS and Linux only
 
 os=
 arch=
