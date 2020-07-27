@@ -12,6 +12,10 @@ function echo_green() {
     echo -e "\033[32m${1}\033[0m"
 }
 
+function echo_red() {
+    echo -e "\033[31m${1}\033[0m"
+}
+
 function get_os_name() {
     os_name="$(uname | tr '[:upper:]' '[:lower:]')"
 }
@@ -26,6 +30,11 @@ function get_arch_name() {
 
 function get_latest_version() {
     curl -LkSs "https://api.github.com/repos/ncm-org/ncm/releases/latest" -o "$ncm_folder/latest"
+    if [ ! -f "$ncm_folder/latest" ]; then
+		echo_red "failed to get version information"
+        exit 1
+    fi
+
     latest_version=$(grep tag_name "$ncm_folder/latest" | awk -F '[:,"v]' '{print $6}')
     rm -f "$ncm_folder/latest"
 }
@@ -41,6 +50,11 @@ function install() {
     echo_green "download $download_name"
 
     curl -Lk "https://github.com/ncm-org/ncm/releases/download/v$latest_version/$download_name" -o "$ncm_folder/$download_name"
+    if [ ! -f "$ncm_folder/$download_name" ]; then
+		echo_red "download failed"
+        exit 1
+    fi
+
     unzip -qq -o "$ncm_folder/$download_name" -d "$ncm_folder"
     rm -f "$ncm_folder/$download_name"
 
