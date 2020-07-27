@@ -85,6 +85,10 @@ function set_envionment_variables() {
 		echo "$ncm_enc" >>"$HOME"/.bash_profile
 	fi
 
+	if [[ -f "$HOME"/.profile ]] && [[ "$(grep -c NCM_HOME <"$HOME"/.profile)" == 0 ]]; then
+		echo "$ncm_enc" >>"$HOME"/.profile
+	fi
+
 	chmod +x "$ncm_folder"/ncm
 }
 
