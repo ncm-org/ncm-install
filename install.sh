@@ -100,6 +100,7 @@ function install() {
 	get_latest_version
 	download_latest_version
 	unzip_latest_version
+	set_envionment_variables
 
 	echo_green "successfully installed ncm@$latest_version"
 }
