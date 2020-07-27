@@ -34,14 +34,17 @@ function get_latest_version() {
 	curl -LkSs "https://api.github.com/repos/ncm-org/ncm/releases/latest" -o "$ncm_folder/latest"
 	if [ ! -f "$ncm_folder/latest" ]; then
 		echo_red "failed to get version information, please try again!"
+		return 1
 	fi
 
 	latest_version=$(grep tag_name "$ncm_folder/latest" | awk -F '[:,"v]' '{print $6}')
 	if [ -z "$latest_version" ]; then
 		echo_red "failed to get version information, please try again!"
+		return 1
 	fi
 
 	rm -f "$ncm_folder/latest"
+	return 0
 }
 
 function download_latest_version() {
@@ -51,7 +54,9 @@ function download_latest_version() {
 	curl -Lk "https://github.com/ncm-org/ncm/releases/download/v$latest_version/$download_name" -o "$ncm_folder/$download_name"
 	if [ ! -f "$ncm_folder/$download_name" ]; then
 		echo_red "download failed, please try again!"
+		return 1
 	fi
+	return 0
 }
 
 function unzip_latest_version() {
@@ -60,7 +65,9 @@ function unzip_latest_version() {
 
 	if [ ! -f "$ncm_folder/ncm" ]; then
 		echo_red "no NCM was found, please try again!"
+		return 1
 	fi
+	return 0
 }
 
 function set_envionment_variables() {
@@ -93,12 +100,26 @@ function install() {
 
 	get_os_name
 	get_arch_name
-	get_latest_version
-	download_latest_version
-	unzip_latest_version
-	set_envionment_variables
 
+	get_latest_version
+	if [ $? -ne 0 ]; then
+		return 1
+	fi
+
+	download_latest_version
+	if [ $? -ne 0 ]; then
+		return 1
+	fi
+
+	unzip_latest_version
+	if [ $? -ne 0 ]; then
+		return 1
+	fi
+
+	set_envionment_variables
 	echo_green "successfully installed ncm@$latest_version"
+
+	return 0
 }
 
 install
