@@ -101,18 +101,13 @@ function install() {
 	get_os_name
 	get_arch_name
 
-	get_latest_version
-	if [ $? -ne 0 ]; then
+	if ! get_latest_version; then
 		return 1
 	fi
-
-	download_latest_version
-	if [ $? -ne 0 ]; then
+	if ! download_latest_version; then
 		return 1
 	fi
-
-	unzip_latest_version
-	if [ $? -ne 0 ]; then
+	if ! unzip_latest_version; then
 		return 1
 	fi
 
