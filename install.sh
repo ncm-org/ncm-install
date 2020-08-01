@@ -65,6 +65,7 @@ function check_zip_sum() {
 	online_zip_sum=$(curl -LSs https://github.com/ncm-org/ncm/releases/download/v"$latest_version"/checksums.txt | grep "$download_name" | awk '{print $1}')
 	if [ "$local_zip_sum" != "$online_zip_sum" ]; then
 		echo_red "file hash does not match, please try again!"
+		rm -f "$ncm_folder/$download_name"
 		return 1
 	fi
 	return 0
