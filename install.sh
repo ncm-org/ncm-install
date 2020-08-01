@@ -31,7 +31,7 @@ function get_arch_name() {
 }
 
 function get_latest_version() {
-	curl -LkSs "https://api.github.com/repos/ncm-org/ncm/releases/latest" -o "$ncm_folder/latest"
+	curl -LSs "https://api.github.com/repos/ncm-org/ncm/releases/latest" -o "$ncm_folder/latest"
 	if [ ! -f "$ncm_folder/latest" ]; then
 		echo_red "failed to get version information, please try again!"
 		return 1
@@ -51,7 +51,7 @@ function download_latest_version() {
 	download_name="ncm_${latest_version}_${os_name}_${arch_name}.zip"
 	echo_green "download $download_name"
 
-	curl -Lk "https://github.com/ncm-org/ncm/releases/download/v$latest_version/$download_name" -o "$ncm_folder/$download_name"
+	curl -L "https://github.com/ncm-org/ncm/releases/download/v$latest_version/$download_name" -o "$ncm_folder/$download_name"
 	if [ ! -f "$ncm_folder/$download_name" ]; then
 		echo_red "download failed, please try again!"
 		return 1
