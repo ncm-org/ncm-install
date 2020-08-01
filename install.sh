@@ -59,6 +59,16 @@ function download_latest_version() {
 	return 0
 }
 
+function check_zip_sum() {
+	local_zip_sum=$(sha256sum "$ncm_folder/$download_name" | awk '{print $1}')
+	online_zip_sum=$(curl -LSs https://github.com/ncm-org/ncm/releases/download/v"$latest_version"/checksums.txt | grep "$download_name" | awk '{print $1}')
+	if [ "$local_zip_sum" != "$online_zip_sum" ]; then
+		echo_red "file hash does not match, please try again!"
+		return 1
+	fi
+	return 0
+}
+
 function unzip_latest_version() {
 	unzip -qq -o "$ncm_folder/$download_name" -d "$ncm_folder"
 	rm -f "$ncm_folder/$download_name"
@@ -105,6 +115,9 @@ function install() {
 		return 1
 	fi
 	if ! download_latest_version; then
+		return 1
+	fi
+	if ! check_zip_sum; then
 		return 1
 	fi
 	if ! unzip_latest_version; then
