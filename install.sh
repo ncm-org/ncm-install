@@ -11,11 +11,32 @@ latest_version=
 ncm_folder=$HOME/.ncm
 
 function echo_green() {
-	echo -e "\033[32m${1}\033[0m"
+	echo -e "\033[32m$1\033[0m"
 }
 
 function echo_red() {
-	echo -e "\033[31m${1}\033[0m"
+	echo -e "\033[31m$1\033[0m"
+}
+
+function check_dependent_util() {
+	if [ ! "$(command -v "$1")" ]; then
+		echo_red "$1 is not installed, please try again!"
+		return 1
+	fi
+	return 0
+}
+
+function check_dependent_utils() {
+	if ! check_dependent_util "curl"; then
+		return 1
+	fi
+	if ! check_dependent_util "unzip"; then
+		return 1
+	fi
+	if ! check_dependent_util "sha256sum"; then
+		return 1
+	fi
+	return 0
 }
 
 function get_os_name() {
@@ -108,6 +129,10 @@ function set_envionment_variables() {
 }
 
 function install() {
+	if ! check_dependent_utils; then
+		return 1
+	fi
+
 	mkdir -p "${ncm_folder}"
 
 	get_os_name
